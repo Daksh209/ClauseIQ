@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+*.pyo
+
+venv/
+.env
+
+model_output/
+
+CUAD_v1/full_contract_pdf/
+CUAD_v1/full_contract_txt/
+
+*.pdf
