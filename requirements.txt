@@ -1,0 +1,11 @@
+flask
+spacy
+pdfplumber
+pytesseract
+pillow
+pymupdf
+opencv-python
+numpy
+scikit-learn
+pandas
+python-dateutil
