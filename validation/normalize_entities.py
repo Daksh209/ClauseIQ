@@ -31,13 +31,34 @@ def normalize_entities(valid_entities: list) -> list:
 
 def normalize_date(text: str) -> str:
 
-    # remove st/nd/rd/th
-    cleaned = re.sub(r'(\d+)(st|nd|rd|th)', r'\1', text)
+    # extract actual date from long sentence
+    date_match = re.search(
+        r'(\w+\s+\d{1,2},\s+\d{4})',
+        text
+    )
 
-    cleaned = cleaned.replace("day of", "").strip()
+    if date_match:
+        text = date_match.group(1)
+
+    # remove st/nd/rd/th
+    cleaned = re.sub(
+        r'(\d+)(st|nd|rd|th)',
+        r'\1',
+        text
+    )
+
+    # handle phrases like "14th day of March, 2011"
+    cleaned = cleaned.replace(
+        "day of",
+        ""
+    ).strip()
+
+    # remove extra spaces
+    cleaned = re.sub(r"\s+", " ", cleaned)
 
     formats = [
         "%d %B %Y",
+        "%d %B, %Y",
         "%B %d, %Y",
         "%B %d %Y",
         "%Y-%m-%d",
@@ -56,7 +77,6 @@ def normalize_date(text: str) -> str:
             continue
 
     return text
-
 
 def normalize_org(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()

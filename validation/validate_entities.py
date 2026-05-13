@@ -39,6 +39,7 @@ def is_valid_date(text: str) -> bool:
         r"\d{4}-\d{2}-\d{2}",
         r"\w+\s+\d{1,2},?\s+\d{4}",
         r"\d{1,2}/\d{1,2}/\d{4}",
+        r"\d{1,2}(st|nd|rd|th)?\s+day\s+of\s+\w+,\s+\d{4}"
     ]
     return any(re.search(p, text, re.IGNORECASE) for p in patterns)
 
