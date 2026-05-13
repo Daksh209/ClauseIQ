@@ -1,32 +1,38 @@
 from ocr.extract_text import process_pdf
+from validation.post_process import post_process
+
 import spacy
 import json
 
-# Load trained NER model
+# Load trained model
 nlp = spacy.load("model_output")
 
-# Process PDF
+# OCR step
 ocr_result = process_pdf("ocr/sample.pdf")
 
 text = ocr_result["text"]
 
-# Run NER
+# NER step
 doc = nlp(text)
 
-# Store entities
-entities = []
+# Convert entities into validation format
+raw_entities = []
 
 for ent in doc.ents:
-    entities.append({
-        "text": ent.text,
-        "label": ent.label_
-    })
+    raw_entities.append(
+        (
+            ent.start_char,
+            ent.end_char,
+            ent.label_,
+            ent.text
+        )
+    )
 
-# Final output
-final_output = {
-    "file_name": ocr_result["file_name"],
-    "method": ocr_result["method"],
-    "entities": entities
-}
+# Validation + normalization
+final_output = post_process(
+    raw_entities,
+    source_file=ocr_result["file_name"]
+)
 
+# Print final JSON
 print(json.dumps(final_output, indent=2))
