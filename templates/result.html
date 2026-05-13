@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Extraction Result</title>
+
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='style.css') }}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <div class="result-card">
+        <h1>Extraction Result</h1>
+
+        <div class="section">
+          <h2>Source File</h2>
+          <p>{{ result.source_file }}</p>
+        </div>
+
+        <div class="section">
+          <h2>Effective Date</h2>
+          <p>{{ result.effective_date }}</p>
+        </div>
+
+        <div class="section">
+          <h2>Confidence</h2>
+          <p>{{ result.confidence }}</p>
+        </div>
+
+        <div class="section">
+          <h2>Parties</h2>
+
+          <ul>
+            {% for party in result.parties %}
+            <li>{{ party }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+        <div class="section">
+          <h2>Detected Entities</h2>
+
+          <table>
+            <tr>
+              <th>Label</th>
+              <th>Raw</th>
+              <th>Normalized</th>
+            </tr>
+
+            {% for entity in result.all_entities %}
+            <tr>
+              <td>{{ entity.label }}</td>
+              <td>{{ entity.raw }}</td>
+              <td>{{ entity.normalized }}</td>
+            </tr>
+            {% endfor %}
+          </table>
+        </div>
+
+        <a href="/" class="back-btn">Upload Another PDF</a>
+      </div>
+    </div>
+  </body>
+</html>
