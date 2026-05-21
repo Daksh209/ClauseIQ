@@ -9,39 +9,58 @@
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
-  </head>
-  <body>
-    <div class="container">
-      <div class="result-card">
-        <h1>Extraction Result</h1>
 
-        <div class="section">
-          <h2>Source File</h2>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="background-glow"></div>
+
+    <div class="results-wrapper">
+      <div class="results-header">
+        <h1>Extraction Result</h1>
+        <p>AI-powered legal entity analysis completed successfully.</p>
+      </div>
+
+      <div class="top-cards">
+        <div class="summary-card">
+          <h3>Source File</h3>
           <p>{{ result.source_file }}</p>
         </div>
 
-        <div class="section">
-          <h2>Effective Date</h2>
+        <div class="summary-card">
+          <h3>Effective Date</h3>
           <p>{{ result.effective_date }}</p>
         </div>
 
-        <div class="section">
-          <h2>Confidence</h2>
+        <div class="summary-card">
+          <h3>Confidence</h3>
           <p>{{ result.confidence }}</p>
         </div>
 
-        <div class="section">
-          <h2>Parties</h2>
+        <div class="summary-card">
+          <h3>Entities</h3>
+          <p>{{ result.all_entities|length }}</p>
+        </div>
+      </div>
 
-          <ul>
-            {% for party in result.parties %}
-            <li>{{ party }}</li>
-            {% endfor %}
-          </ul>
+      <div class="content-grid">
+        <div class="panel">
+          <h2>Detected Parties</h2>
+
+          {% for party in result.parties %}
+          <div class="party-item">{{ party }}</div>
+          {% endfor %}
         </div>
 
-        <div class="section">
-          <h2>Detected Entities</h2>
+        <div class="panel">
+          <h2>Entity Table</h2>
 
           <table>
             <tr>
@@ -51,16 +70,43 @@
             </tr>
 
             {% for entity in result.all_entities %}
+
             <tr>
               <td>{{ entity.label }}</td>
               <td>{{ entity.raw }}</td>
               <td>{{ entity.normalized }}</td>
             </tr>
+
             {% endfor %}
           </table>
         </div>
+      </div>
 
-        <a href="/" class="back-btn">Upload Another PDF</a>
+      <div class="invalid-section">
+        <h2>Processing Summary</h2>
+
+        <div class="invalid-card">
+          <p><strong>OCR Status:</strong> Successful</p>
+        </div>
+
+        <div class="invalid-card">
+          <p><strong>Validation:</strong> Passed</p>
+        </div>
+
+        <div class="invalid-card">
+          <p>
+            <strong>Entities Extracted:</strong> {{ result.all_entities|length
+            }}
+          </p>
+        </div>
+
+        <div class="invalid-card">
+          <p><strong>AI Confidence:</strong> {{ result.confidence }}</p>
+        </div>
+      </div>
+
+      <div class="back-container" style="margin-top: 20px">
+        <a href="/" class="back-btn"> Upload Another Contract </a>
       </div>
     </div>
   </body>

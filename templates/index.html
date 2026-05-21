@@ -3,28 +3,113 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LexiScan Auto</title>
+    <title>ClauseIQ</title>
 
     <link
       rel="stylesheet"
       href="{{ url_for('static', filename='style.css') }}"
     />
-  </head>
-  <body>
-    <div class="container">
-      <div class="card">
-        <h1>LexiScan Auto</h1>
 
-        <p class="subtitle">
-          AI-powered legal document entity extraction system
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="background-glow"></div>
+
+    <div class="hero-container">
+      <div class="hero-left">
+        <div class="badge">AI Powered Legal Intelligence</div>
+
+        <h1>Clause<span>IQ</span></h1>
+
+        <p class="hero-description">
+          Intelligent legal document processing platform powered by OCR, NLP,
+          Named Entity Recognition and AI-driven validation.
         </p>
 
-        <form action="/extract" method="POST" enctype="multipart/form-data">
-          <input type="file" name="file" accept=".pdf" required />
+        <div class="feature-grid">
+          <div class="feature-card">
+            <h3>OCR Extraction</h3>
+            <p>Reads scanned legal contracts and PDFs automatically.</p>
+          </div>
 
-          <button type="submit">Extract Entities</button>
-        </form>
+          <div class="feature-card">
+            <h3>AI Entity Detection</h3>
+            <p>Extracts dates, organizations and monetary entities.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>Validation Engine</h3>
+            <p>Filters invalid legal entities and normalizes outputs.</p>
+          </div>
+
+          <div class="feature-card">
+            <h3>Structured Output</h3>
+            <p>Returns organized JSON and frontend visual results.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="upload-panel">
+        <div class="upload-card">
+          <div class="upload-icon">📄</div>
+
+          <h2>Upload Legal Contract</h2>
+
+          <p class="upload-subtitle">
+            Upload agreements, contracts or legal PDFs and let AI automatically
+            extract important entities.
+          </p>
+
+          <form action="/extract" method="POST" enctype="multipart/form-data">
+            <label class="custom-file-upload">
+              <input
+                type="file"
+                id="pdfFile"
+                name="file"
+                accept=".pdf,.docx,.txt,.png,.jpg,.jpeg"
+                required
+              />
+
+              <div class="upload-inner">
+                <div class="upload-emoji">⬆️</div>
+
+                <h3>Upload Legal Documents</h3>
+
+                <p>Supports PDF, DOCX, TXT and Images</p>
+
+                <div id="file-name" class="file-name">No file selected</div>
+              </div>
+            </label>
+
+            <button type="submit">✨ Analyze Legal Document</button>
+
+            <div class="supported-files">
+              Supported: PDF • DOCX • TXT • PNG • JPG
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </body>
+  <script>
+    const fileInput = document.getElementById("pdfFile");
+    const fileName = document.getElementById("file-name");
+
+    fileInput.addEventListener("change", function () {
+      if (this.files.length > 0) {
+        fileName.innerHTML = `
+            ✅ ${this.files[0].name}
+        `;
+      } else {
+        fileName.innerHTML = "No file selected";
+      }
+    });
+  </script>
 </html>
