@@ -1,6 +1,6 @@
-# LexiScan Auto
+# ClauseIQ
 
-LexiScan Auto is an AI-powered Intelligent Document Processing (IDP) system designed to automate information extraction from legal contracts and agreements.
+ClauseIQ is an AI-powered Intelligent Document Processing (IDP) system designed to automate information extraction from legal contracts and agreements.
 
 The system combines:
 
@@ -16,7 +16,7 @@ to extract and process important legal information from PDF documents.
 
 # Project Objective
 
-The primary objective of LexiScan Auto is to build a production-style AI pipeline capable of:
+The primary objective of ClauseIQ is to build a production-style AI pipeline capable of:
 
 1. Extracting text from scanned legal contracts and PDF files
 2. Detecting legal entities using a custom-trained NLP model
