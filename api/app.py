@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 
-from ocr.extract_text import process_pdf
+from ocr.extract_text import process_document
 from validation.post_process import post_process
 
 import spacy
@@ -31,23 +31,45 @@ def extract():
     if file.filename == '':
         return "No file selected", 400
 
+    ALLOWED_EXTENSIONS = (
+        ".pdf",
+        ".txt",
+        ".png",
+        ".jpg",
+        ".jpeg",
+        ".docx"
+    )
+
+    if not file.filename.lower().endswith(ALLOWED_EXTENSIONS):
+        return "Unsupported file format", 400
+
     os.makedirs("uploads", exist_ok=True)
 
-    upload_path = os.path.join("uploads", file.filename)
+    upload_path = os.path.join(
+        "uploads",
+        file.filename
+    )
 
     file.save(upload_path)
 
-    # OCR
-    ocr_result = process_pdf(upload_path)
+    # -------------------------------
+    # UNIVERSAL DOCUMENT PROCESSING
+    # -------------------------------
+
+    ocr_result = process_document(upload_path)
 
     text = ocr_result["text"]
-    
-    # NER
+
+    # -------------------------------
+    # NER PROCESSING
+    # -------------------------------
+
     doc = nlp(text)
 
     raw_entities = []
 
     for ent in doc.ents:
+
         raw_entities.append(
             (
                 ent.start_char,
@@ -57,12 +79,19 @@ def extract():
             )
         )
 
-    # Validation + normalization
+    # -------------------------------
+    # VALIDATION + NORMALIZATION
+    # -------------------------------
+
     final_output = post_process(
         raw_entities,
         source_file=file.filename
     )
-    
+
+    # -------------------------------
+    # FRONTEND RESULT
+    # -------------------------------
+
     return render_template(
         "result.html",
         result=final_output
@@ -83,7 +112,7 @@ def api_extract():
 
     file.save(upload_path)
 
-    ocr_result = process_pdf(upload_path)
+    ocr_result = process_document(upload_path)
 
     text = ocr_result["text"]
     
